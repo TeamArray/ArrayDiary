@@ -24,7 +24,8 @@ async function fn (client, msg) {
       { name: '일주일 간 작성한 일기 수', value: thisweek.length + '장 (__목표량' + subtract + '__)' },
       { name: '일주일 간 작성한 글자 수', value: thisweek.reduce((acc, cur) => acc + cur.length, 0) + '자' },
       { name: '총 작성한 일기 수', value: diaries.length + '장', inline: true },
-      { name: '총 작성한 글자 수', value: diaries.reduce((acc, cur) => acc + cur.length, 0) + '자', inline: true }
+      { name: '총 작성한 글자 수', value: diaries.reduce((acc, cur) => acc + cur.length, 0) + '자', inline: true },
+      { name: '총 받은 스타 수', value: diaries.reduce((acc, cur) => acc + cur.stars, 0) + ' <a:__diary_star:762703472293314561>' }
     ]
   })
 
