@@ -8,7 +8,7 @@ const { MessageEmbed } = require('discord.js')
 async function fn (client, msg) {
   const now = moment()
   const diaries = await client.db.select('*').where('author', msg.author.id).orderBy('createdAt').from('diaries')
-  const thisweek = await diaries.filter((diary) => now.day(0) > diary.createdAt || diary.createdAt > now.day(-7))
+  const thisweek = await diaries.filter((diary) => now.day(0) > diary.createdAt || diary.createdAt > now.day(-6))
 
   const notbad = thisweek.length >= client.settings.needweek
   const subtract =

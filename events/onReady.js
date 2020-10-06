@@ -1,3 +1,6 @@
+const checkComplete = require('../utils/checkComplete')
+const { scheduleJob } = require('node-schedule')
+
 /**
  * @param {import('../classes/Client')} client
  */
@@ -17,6 +20,8 @@ async function onReady (client) {
       if (!exist) await client.db.insert({ id: msg.id, author: msg.author.id, length: msg.content.length, createdAt: msg.createdAt }).into('diaries')
     }
   }
+
+  scheduleJob('0 22 * * SUN', checkComplete(client))
 }
 
 module.exports = onReady
