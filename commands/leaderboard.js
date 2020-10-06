@@ -11,13 +11,12 @@ async function fn (client, msg) {
   let leaderboard = []
 
   for (const author of authors) {
-    leaderboard.push({ id: (await client.users.fetch(author)).username, point: await fetchPoint(client, author) })
+    leaderboard.push({ id: (msg.guild.members.resolve(author) || { nickname: 'Unknown' }).nickname, point: await fetchPoint(client, author) })
   }
 
-  leaderboard = leaderboard.sort((a, b) => a.point - b.point).reverse().slice(0, 21)
+  leaderboard = leaderboard.sort((a, b) => a.point - b.point).reverse().slice(0, 10)
   const embed = new MessageEmbed({ color: 0x60caff, title: 'ArrayDiary 리더보드' })
   for (const leaderIndex in leaderboard) {
-    console.log(leaderIndex)
     embed.addField((Number(leaderIndex) + 1) + getNumberWithOrdinal(Number(leaderIndex) + 1) + '. ' + leaderboard[leaderIndex].id, leaderboard[leaderIndex].point + 'p')
   }
 

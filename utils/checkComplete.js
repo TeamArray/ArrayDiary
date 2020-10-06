@@ -4,9 +4,10 @@ const { MessageEmbed } = require('discord.js')
 function checkComplete (client, channel = client.channels.resolve(client.settings.report)) {
   return async () => {
     const now = moment()
-    const diaries = await client.db.select('*').orderBy('createdAt').where('createdAt', '<', now.day(0).toString()).andWhere('createdAt', '>', now.day(-6).toString()).from('diaries')
+    const diaries = await client.db.select('*').orderBy('createdAt').from('diaries')
+    const thisweek = await diaries.filter((diary) => now.clone().day(0) > diary.createdAt || diary.createdAt > now.clone().day(-6))
 
-    const authors = [...new Set(diaries.map((diary) => diary.author))]
+    const authors = [...new Set(thisweek.map((diary) => diary.author))]
     const goodAuthors = []
     const badAuthors = []
 
@@ -18,7 +19,7 @@ function checkComplete (client, channel = client.channels.resolve(client.setting
           authorDiaries.length === client.settings.needweek
             ? '=0' : authorDiaries.length < client.settings.needweek
               ? '-' + (client.settings.needweek - authorDiaries.length)
-              : '+ ' + (authorDiaries.length - client.settings.needweek)
+              : '+' + (authorDiaries.length - client.settings.needweek)
 
       if (notbad) goodAuthors.push('<@' + author + '> (**' + subtract + '**)')
       else badAuthors.push('<@' + author + '> (**' + subtract + '**)')
@@ -26,10 +27,10 @@ function checkComplete (client, channel = client.channels.resolve(client.setting
 
     channel
       .send(new MessageEmbed({
-        title: now.format('MM월') + ' ' + Math.ceil(now.date() / 7) + '째 주 정산',
+        title: (now.month() + 1) + ' ' + Math.ceil(now.date() / 7) + '째 주 정산',
         fields: [
-          { name: '목표량 충족', value: goodAuthors.join('\n') || '없음' },
-          { name: '목표량 불충족', value: badAuthors.join('\n') || '없음' }
+          { name: '목표량 충족 (' + goodAuthors.length + '명)', value: goodAuthors.join('\n') || '없음' },
+          { name: '목표량 불충족 (' + badAuthors.length + '명)', value: badAuthors.join('\n') || '없음' }
         ]
       }))
   }

@@ -29,6 +29,8 @@ async function onMessage (client, msg) {
       command.aliases.includes(query.cmd)
   )
 
+  msg.query = query
+
   if (!target) return
   target(client, msg)
 }

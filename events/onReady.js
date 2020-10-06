@@ -15,6 +15,7 @@ async function onReady (client) {
   for (const channel of channels) {
     const channelmsgs = await channel.messages.fetch()
     for (const [, msg] of channelmsgs) {
+      if (msg.author.bot) continue
       if (msg.content.length < client.settings.minchar) continue
       const [exist] = await client.db.select('id').where('id', msg.id).from('diaries')
       if (!exist) await client.db.insert({ id: msg.id, author: msg.author.id, length: msg.content.length, createdAt: msg.createdAt }).into('diaries')
