@@ -1,5 +1,6 @@
 const moment = require('moment')
 const { MessageEmbed } = require('discord.js')
+const fetchPoint = require('../utils/fetchPoint')
 
 /**
  * @param {import('../classes/Client')} client
@@ -25,7 +26,8 @@ async function fn (client, msg) {
       { name: '일주일 간 작성한 글자 수', value: thisweek.reduce((acc, cur) => acc + cur.length, 0) + '자' },
       { name: '총 작성한 일기 수', value: diaries.length + '장', inline: true },
       { name: '총 작성한 글자 수', value: diaries.reduce((acc, cur) => acc + cur.length, 0) + '자', inline: true },
-      { name: '총 받은 스타 수', value: diaries.reduce((acc, cur) => acc + cur.stars, 0) + ' <a:__diary_star:762703472293314561>' }
+      { name: '총 받은 스타 수', value: diaries.reduce((acc, cur) => acc + cur.stars, 0) + ' <a:__diary_star:762703472293314561>', inline: true },
+      { name: '다이어리 포인트', value: '**' + await fetchPoint(client, msg.author.id) + 'p**' }
     ]
   })
 
