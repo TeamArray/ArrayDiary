@@ -6,7 +6,7 @@ function checkComplete (client, channel = client.channels.resolve(client.setting
     const now = moment()
     const diaries = await client.db.select('*').orderBy('createdAt').where('createdAt', '<', now.day(0).toString()).andWhere('createdAt', '>', now.day(-6).toString()).from('diaries')
 
-    const authors = diaries.map((diary) => diary.author)
+    const authors = [...new Set(diaries.map((diary) => diary.author))]
     const goodAuthors = []
     const badAuthors = []
 
