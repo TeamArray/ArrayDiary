@@ -1,8 +1,5 @@
 function fn (client, msg) {
-  msg.channel.send(
-    'pong!\n' +
-    client.ws.ping + 'ms'
-  )
+  msg.channel.send('pong! (' + client.ws.ping + 'ms)')
 }
 
 module.exports = fn
