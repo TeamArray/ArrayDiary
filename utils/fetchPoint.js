@@ -9,7 +9,7 @@ async function fetchPoint (client, author) {
   for (const diary of diaries) {
     point += 30 +
       diary.length * 2 +
-      diary.stars * 5
+      diary.stars * 100
   }
 
   return point

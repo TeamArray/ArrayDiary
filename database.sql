@@ -9,5 +9,5 @@ create table diaries (
   author varchar(20) not null,
   length int not null,
   createdAt timestamp default CURRENT_TIMESTAMP not null,
-  stars int default 1 not null
+  stars int default 0 not null
 );
